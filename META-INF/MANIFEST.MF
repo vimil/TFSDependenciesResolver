@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TFSDependenciesResolver
+Bundle-SymbolicName: com.cwctravel.eclipse.plugins.dependencies.resolvers.tfs;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.cwctravel.eclipse.plugins.dependencies.resolvers.tfs.TFSDependenciesResolverPlugin
+Require-Bundle: org.eclipse.core.runtime,
+ com.cwctravel.eclipse.plugins.dependencies,
+ com.microsoft.tfs.core,
+ com.microsoft.tfs.client.common,
+ com.microsoft.tfs.client.eclipse
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6,
+ JavaSE-1.7
+Bundle-Vendor: Costco Travel
