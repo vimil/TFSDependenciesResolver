@@ -62,15 +62,14 @@ public class TFSDependenciesResolver implements IDependenciesResolver {
 			Map<TFSServer, List<GetRequest>> serverGetRequestMap = new HashMap<TFSServer, List<GetRequest>>();
 			Map<TFSServer, List<ItemSpec>> serverItemSpecMap = new HashMap<TFSServer, List<ItemSpec>>();
 
-			TFSServer[] tfsServers = TFSEclipseClientPlugin.getDefault().getServerManager().getServers();
+			TFSServer tfsServer = TFSEclipseClientPlugin.getDefault().getServerManager().getDefaultServer();
 
 			for(IPath dependencyPath: dependencyPaths) {
 				String dependencyLocation = dependencyPath.toOSString();
 				if(!resolvedDependenciesTimestampMap.containsKey(dependencyLocation)) {
 					File dependencyFile = new File(dependencyLocation);
 
-					if(tfsServers != null && tfsServers.length > 0) {
-						for(TFSServer tfsServer: tfsServers) {
+					if(tfsServer != null) {
 							VersionControlClient vCC = tfsServer.getConnection().getVersionControlClient();
 
 							Workspace workspace = serverWorkspaceMap.get(tfsServer);
@@ -99,7 +98,6 @@ public class TFSDependenciesResolver implements IDependenciesResolver {
 									itemSpecs.add(new ItemSpec(dependencyLocation, RecursionType.FULL));
 								}
 							}
-						}
 					}
 
 					resolvedDependenciesTimestampMap.put(dependencyLocation, System.currentTimeMillis());
@@ -110,7 +108,7 @@ public class TFSDependenciesResolver implements IDependenciesResolver {
 				TaskMonitorService.pushTaskMonitor(new ProgressMonitorTaskMonitorAdapter(progressMonitor));
 			}
 
-			for(TFSServer tfsServer: tfsServers) {
+			if( tfsServer != null) {
 				VersionControlClient vCC = tfsServer.getConnection().getVersionControlClient();
 
 				List<GetRequest> getRequests = serverGetRequestMap.get(tfsServer);
@@ -159,8 +157,7 @@ public class TFSDependenciesResolver implements IDependenciesResolver {
 			}
 
 			try {
-
-				for(TFSServer tfsServer: tfsServers) {
+				if( tfsServer != null) {
 					List<GetRequest> getRequests = serverGetRequestMap.get(tfsServer);
 					if(getRequests != null && !getRequests.isEmpty()) {
 						Workspace workspace = serverWorkspaceMap.get(tfsServer);
